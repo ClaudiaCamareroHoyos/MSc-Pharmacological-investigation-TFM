@@ -1,0 +1,37 @@
+run("Set Scale...", "distance=740 known=50 pixel=1 unit=um global");
+
+title=getTitle;
+run("16-bit");
+run("Duplicate...", " ");
+title2=getTitle
+selectWindow(title);
+
+
+waitForUser("Draw an accurate ROI and then press OK ")
+
+run("Fit Spline");
+run("Set Measurements...", "area mean perimeter fit shape limit display add redirect=None decimal=2");
+run("Measure");
+
+selectWindow(title);
+
+
+run("Subtract Background...", "rolling=10");
+setAutoThreshold("Default dark no-reset");
+run("Set Measurements...", "area mean perimeter integrated median area_fraction display add redirect=None decimal=3");
+
+
+run("8-bit");
+
+//run("Threshold...");
+run("Clear Outside");
+setOption("BlackBackground", false);
+run("Convert to Mask");
+run("Set Measurements...", "area mean standard min perimeter fit shape feret's integrated median skewness area_fraction stack limit display add redirect=None decimal=3");
+run("Analyze Particles...", "size=0.02-Infinity show=Nothing display exclude include summarize add");
+selectWindow(title);
+roiManager("Select All");roiManager("Show All");
+
+
+
+
